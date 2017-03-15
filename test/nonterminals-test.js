@@ -6,7 +6,11 @@ const assertRelationEqual = require('./test-helpers').assertRelationEqual;
 const assertSetEqual = require('./test-helpers').assertSetEqual;
 
 function parse(spec) {
-  return Grammar.parse(spec).grammar;
+  let parse = Grammar.parse(spec);
+  if (parse.error) {
+    throw parse.error;
+  }
+  return parse.grammar;
 }
 
 const Fixtures = {
