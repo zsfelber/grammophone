@@ -20,36 +20,76 @@ function assertParseError(spec) {
 
 describe('Parsing', function() {
   it('should parse basic grammars', function() {
-    assertParseProductions([["A", "a"]], "A -> a .");
-    assertParseProductions([["A", "a"], ["A", "b"]], "A -> a | b .");
-    assertParseProductions([["A"]], "A -> .");
+    assertParseProductions([["A", "a"]], "A -> a");
+    assertParseProductions([["A", "a"], ["A", "b"]], "A -> a | b");
+    assertParseProductions([["A"]], "A ->");
+    assertParseProductions([["A", "a"], ["B", "b"], ["A", "c"]], "A -> a; B -> b; A -> c");
+  });
+  
+  it('should accept end of line as the end of a rule', function() {
+    assertParseProductions([["A", "a"], ["A", "b"], ["A", "c"]], "A -> a\nA -> b | c");
+    assertParseProductions([["A", "a"], ["A", "b"], ["A", "c"], ["A"], ["B"]], `
+A -> a |
+b
+A
+->
+c;A
+->
+B
+->`
+    );
+  });
+  
+  it('should accept the colon character as a synonym for the arrow', function() {
+    assertParseProductions([["A", "a"]], "A -> a");
+    assertParseProductions([["A", "a"], ["A", "b"]], "A -> a | b");
+  });
+  
+  it('should accept the full stop character as a synonym for the semicolon', function() {
     assertParseProductions([["A", "a"], ["B", "b"], ["A", "c"]], "A -> a. B -> b. A -> c.");
+  });
+  
+  it('should accept symbols written as strings', function() {
+    assertParseProductions([["A", "alpha"], ["A", "beta"]], `A -> "alpha" | 'beta'`);
+  });
+  
+  it('should allow escaped characters in strings', function() {
+    assertParseProductions([["A", "\"", "'", "\n"]], `A -> "\"" | '\'' | "\n"`);
+  });
+  
+  it('should allow non-ascii characters to be used as symbols', function() {
+    assertParseProductions([["A", "α"]], "A -> α");
+    assertParseProductions([["🧀", "🥛"], ["🥛", "🐮"]], " 🧀 -> 🥛; 🥛 -> 🐮");
   });
 
   it('should parse variations in spacing', function() {
-    assertParseProductions([["A", "a"]], "A->a.");
-    assertParseProductions([["A", "a"], ["A", "b"]], "A->a|b.");
-    assertParseProductions([["A"]], "A->.");
+    assertParseProductions([["A", "a"]], "A->a");
+    assertParseProductions([["A", "a"], ["A", "b"]], "A->a|b");
+    assertParseProductions([["A"]], "A->");
   });
-
-  it('should accept certain non-letter characters as symbols', function() {
-    assertParseProductions([["A", "x", "-", ">", "y"]], "A -> x - > y.");
-    assertParseProductions([["A'", "a"], ["A''", "a"]], "A' -> a. A'' -> a.");
-    assertParseProductions([["A", "something-something"]], "A -> something-something.");
-    assertParseProductions([["-", "-"]], "-->-.");
-    assertParseProductions([["A", "1"], ["A", "2"], ["A", "3"]], "A -> 1 | 2 | 3.");
-    assertParseProductions([["A", "\"", "'"]], "A -> \" \'.");
-    assertParseProductions([["A", "\"a", "\""]], "A -> \"a \".");
+  
+  it('should ignore single-line comments', function() {
+    assertParseProductions([["A", "b"]], "// A -> a\nA -> b");
+    assertParseProductions([], "// 123");
   });
-
-  it('should parse multiple lines', function() {
-    assertParseProductions([["A", "a"], ["A", "b"]], "A -> a |\n  b\n  .");
+  
+  it('should ignore multiple-line comments and allow them to be nested', function() {
+    assertParseProductions([["A", "b"]], '/* A -> a */ A -> b');
+    assertParseProductions([["A", "b"]], '/* /* A -> a */ */ A -> b');
   });
-
-  it('should ignore comments', function() {
-    assertParseProductions([["A", "b"]], "# A -> a .\nA -> b .");
-    assertParseProductions([["A", "b"]], "# abc\n\nA -> b .");
-    assertParseProductions([], "# 123\n\n");
+  
+  it('should accept an empty grammar', function() {
+    assertParseProductions([], "");
+    assertParseProductions([], "\n");
+  });
+  
+  it('should allow the use of #epsilon to indicate the empty string', function() {
+    assertParseProductions([["A"]], "A -> #epsilon");
+    assertParseProductions([["A", "b"]], "A -> #epsilon b #epsilon #epsilon");
+  });
+  
+  it('should interpret an actual epsilon character as a symbol', function() {
+    assertParseProductions([["A", "ε"]], "A -> ε");
   });
 
   it('should correctly emit parse errors', function() {
