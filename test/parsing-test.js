@@ -72,9 +72,30 @@ describe('Parser', function() {
     assertProductions([['a', '\"']], `a -> "\\""`);
   });
   
+  it('should parse rules containing end of line characters', function() {
+    assertProductions([['a', 'b'], ['a', 'c']], 'a -> b |\nc;');
+    assertProductions([['a', 'b'], ['a', 'c']], 'a ->\nb |\nc;');
+    assertProductions([['a', 'b'], ['a', 'c']], 'a\n->\nb\n|\nc;');
+  });
+  
   it('should parse the literal epsilon symbol', function() {
     assertProductions([['a']], 'a -> #epsilon;');
     assertProductions([['a', 'b']], 'a -> #epsilon b #epsilon;');
+  });
+  
+  it('should parse empty expressions', function() {
+    assertProductions([['a'], ['b', 'c']], 'a -> ; b -> c;');
+    assertProductions([['a', 'b'], ['a']], 'a -> b | ;');
+    assertProductions([['a'], ['a', 'b']], 'a -> | b;');
+    assertProductions([['a'], ['a']], 'a -> | ;');
+  });
+  
+  it('should parse end of line as the end of a rule', function() {
+    assertProductions([['a', 'b'], ['c', 'd']], 'a -> b\nc -> d');
+    assertProductions([['a', 'b'], ['c', 'd'], ['c', 'e']], 'a ->\nb\nc -> d |\ne');
+    assertProductions([['a'], ['a'], ['a', 'c', 'd'], ['e', 'f']], 'a -> |\n|\nc d\ne -> f');
+    assertProductions([['a'], ['c', 'd']], 'a -> #epsilon\nc -> d');
+    assertProductions([['a'], ['a'], ['c', 'd']], 'a -> | #epsilon\nc -> d');
   });
   
   it('should ignore single-line comments', function() {
