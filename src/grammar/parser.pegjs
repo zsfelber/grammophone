@@ -160,7 +160,7 @@ LineTerminatorSequence "end of line"
   / "\r"
   / "\u2028"
   / "\u2029"
-  
+
 Comment "comment"
   = MultiLineComment
   / SingleLineComment
