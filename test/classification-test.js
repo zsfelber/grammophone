@@ -6,8 +6,16 @@ const Sets = require('../src/sets');
 const assertSetEqual = require('./test-helpers').assertSetEqual;
 const EXAMPLE_GRAMMARS = require('./fixtures/example_grammars');
 
+function parse(spec) {
+  let parse = Grammar.parse(spec);
+  if (parse.error) {
+    throw parse.error;
+  }
+  return parse.grammar;
+}
+
 function classifications(spec) {
-  let grammar = Grammar.parse(spec).grammar;
+  let grammar = parse(spec);
   let classification = grammar.calculate("grammar.classification");
   let result = {};
   
