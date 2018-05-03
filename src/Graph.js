@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import Viz from 'viz.js';
 import worker from 'viz.js/full.js.opaque';
 
+let viz = new Viz({ worker });
+
 class Graph extends Component {
   constructor(props) {
     super(props);
-    this.viz = new Viz({ worker });
     this.state = {};
     this.containerRef = React.createRef();
   }
   
   updateOutput() {
-    this.viz.renderSVGElement(this.props.src)
+    viz.renderSVGElement(this.props.src)
     .then(element => {
       this.setState({ element });
     });
