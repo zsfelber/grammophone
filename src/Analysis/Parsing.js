@@ -16,7 +16,7 @@ class Parsing extends Component {
                 {formatClassification(classification, "ll1", "LL(1)")}
               </td>
               <td>
-                Parsing table
+                <Link to="/ll1-table">Parsing table</Link>
               </td>
             </tr>
 
