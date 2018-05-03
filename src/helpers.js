@@ -46,7 +46,7 @@ export function joinFormattedSymbols(joiner, symbols, grammar) {
 }
 
 export function formatSentence(symbols, grammar) {
-  if (symbols.length > 1) {
+  if (symbols.length > 0) {
     return joinFormattedSymbols(' ', symbols, grammar);
   } else {
     return [<u key="epsilon">ε</u>];
