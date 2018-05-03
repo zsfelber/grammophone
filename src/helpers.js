@@ -97,7 +97,7 @@ export function plainFormatSymbol(symbol) {
   if (symbol === END) {
     return '$';
   } else {
-    return symbol;
+    return escapeHTML(symbol);
   }
 }
 
