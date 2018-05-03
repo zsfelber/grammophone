@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import Grammar from './grammar';
 import Analysis from './Analysis';
 import Sentences from './Sentences';
-import Grammar from './grammar';
+import LR0Table from './LR0Table';
+import LR0Automaton from './LR0Automaton';
 import './App.css';
 
 const Breadcrumb = ({ path, title, isRoot }) => {
@@ -55,6 +57,8 @@ S ->`;
         <Switch>
           <Route exact path="/" render={props => (<Analysis {...props} grammar={this.state.grammar} />)} />
           <Route path="/sentences" render={props => (<Sentences {...props} grammar={this.state.grammar} />)} />
+          <Route path="/lr0-table" render={props => (<LR0Table {...props} grammar={this.state.grammar} />)} />
+          <Route path="/lr0-automaton" render={props => (<LR0Automaton {...props} grammar={this.state.grammar} />)} />
         </Switch>
       );
     }
@@ -71,6 +75,8 @@ S ->`;
           <p>
             <Breadcrumb path="/" title="Analysis" />
             <Breadcrumb path="/sentences" title="Example Sentences" />
+            <Breadcrumb path="/lr0-table" title="LR(0) Parsing Table" />
+            <Breadcrumb path="/lr0-automaton" title="LR(0) Automaton" />
           </p>
       
           {detail}

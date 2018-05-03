@@ -93,6 +93,46 @@ export function formatClassification(classifications, name, displayName) {
   }
 }
 
+export function plainFormatSymbol(symbol) {
+  if (symbol === END) {
+    return '$';
+  } else {
+    return symbol;
+  }
+}
+
+export function plainFormatItem(item, grammar) {
+  const start = grammar.calculate('grammar.start');
+  const productions = grammar.calculate('grammar.productions');
+  
+  let production;
+
+  if (item.production === -1) {
+    if (item.index === 0) {
+      production = "&bull; " + plainFormatSymbol(start);
+    } else {
+      production = plainFormatSymbol(start) + " &bull;";
+    }
+  } else {
+    let symbols = productions[item.production].slice(1).map(plainFormatSymbol);
+    symbols.splice(item.index, 0, "&bull;");
+
+    production = plainFormatSymbol(productions[item.production][0]) + " &rarr; " + symbols.join(" ");
+  }
+
+  if (item.lookaheads) {
+    return "[" + production + ", " + item.lookaheads.map(plainFormatSymbol).join(" / ") + "]";
+  } else if (item.lookahead) {
+    return "[" + production + ", " + plainFormatSymbol(item.lookahead) + "]";
+  } else {
+    return production;
+  }
+}
+
+export function escapeHTML(string) {
+  return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 
 // const END = require('./grammar/symbols').END;
 //

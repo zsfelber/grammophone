@@ -11,8 +11,6 @@ class Sentences extends Component {
     
     return (
       <div>
-        <h1>Example Sentences</h1>
-      
         <ul>
           {sentences}
         </ul>

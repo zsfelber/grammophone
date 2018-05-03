@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { formatClassification } from '../helpers';
 
 class Parsing extends Component {
@@ -25,8 +26,7 @@ class Parsing extends Component {
                 {formatClassification(classification, "lr0", "LR(0)")}
               </td>
               <td>
-                Automaton,
-                Parsing table
+                <Link to="/lr0-automaton">Automaton</Link>, <Link to="/lr0-table">Parsing table</Link>
               </td>
             </tr>
 
