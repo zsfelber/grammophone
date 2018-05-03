@@ -1,0 +1,11 @@
+a.active {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  cursor: default;
+}
+
+.editor {
+  width: 300px;
+  height: 200px;
+}
