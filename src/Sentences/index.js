@@ -10,11 +10,12 @@ class Sentences extends Component {
     });
     
     return (
-      <div>
-        <ul>
+      <article id="sentences">
+        <h1>Example Sentences</h1>
+        <ul className="symbols">
           {sentences}
         </ul>
-      </div>
+      </article>
     );
   }
 }

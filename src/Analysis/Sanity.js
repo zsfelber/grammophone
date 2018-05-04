@@ -59,15 +59,13 @@ function Ambiguous(props) {
 class Sanity extends Component {
   render() {
     return (
-      <div>
-        <ul>
-          <li><Unreachable grammar={this.props.grammar} /></li>
-          <li><Unrealizable grammar={this.props.grammar} /></li>
-          <li><Cyclic grammar={this.props.grammar} /></li>
-          <li><NullAmbiguity grammar={this.props.grammar} /></li>
-          <li><Ambiguous grammar={this.props.grammar} /></li>
-        </ul>
-      </div>
+      <ul className="symbols">
+        <li><Unreachable grammar={this.props.grammar} /></li>
+        <li><Unrealizable grammar={this.props.grammar} /></li>
+        <li><Cyclic grammar={this.props.grammar} /></li>
+        <li><NullAmbiguity grammar={this.props.grammar} /></li>
+        <li><Ambiguous grammar={this.props.grammar} /></li>
+      </ul>
     );
   }
 }

@@ -1,0 +1,12 @@
+.parsing-algorithm-table th[scope=row] {
+  border: 1px solid #eee;
+  text-align: left;
+}
+
+.parsing-algorithm-table .conflict {
+  background: #fdd;
+}
+
+.parsing-algorithm-table .classification {
+  font-size: 90%;
+}

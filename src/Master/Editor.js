@@ -15,10 +15,11 @@ class Editor extends Component {
   
   render() {
     return (
-      <React.Fragment>
-        <h1>Editor</h1>
-        <textarea className="editor" value={this.props.src} onChange={this.handleChange} />
-      </React.Fragment>
+      <section id="edit">
+        <div className="spec-wrap">
+          <textarea className="spec" value={this.props.src} onChange={this.handleChange} />
+        </div>
+      </section>
     );
   }
 }

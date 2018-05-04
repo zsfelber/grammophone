@@ -22,22 +22,20 @@ class Nonterminals extends Component {
     });
     
     return (
-      <div>
-        <table className="symbols">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Nullable?</th>
-              <th>Endable?</th>
-              <th>First set</th>
-              <th>Follow set</th>
-            </tr>
-          </thead>
-          <tbody>
-            {nonterminals}
-          </tbody>
-        </table>
-      </div>
+      <table className="symbols">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Nullable?</th>
+            <th>Endable?</th>
+            <th>First set</th>
+            <th>Follow set</th>
+          </tr>
+        </thead>
+        <tbody>
+          {nonterminals}
+        </tbody>
+      </table>
     );
   }
 }

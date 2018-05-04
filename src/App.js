@@ -12,7 +12,17 @@ import SLR1Table from './SLR1Table';
 import LALR1Table from './LALR1Table';
 import LALR1Automaton from './LALR1Automaton';
 import Master from './Master';
+
 import './App.css';
+import './styles/application.css';
+import './styles/analysis.css';
+import './styles/edit.css';
+import './styles/transform.css';
+import './styles/views/blank_slate.css';
+import './styles/views/ll1_table.css';
+import './styles/views/lr0_table.css';
+import './styles/views/lr1_table.css';
+import './styles/views/parsing.css';
 
 const Breadcrumb = ({ path, title, isRoot }) => {
   return (
@@ -70,23 +80,27 @@ S ->`;
       <Router>
         <div>
           <Master src={this.state.src} grammar={this.state.grammar} onChange={this.handleChange} />
+
+          <section id="analysis">
       
-          <hr />
+            <header className="header">
+              <nav>
+                <Breadcrumb path="/" title="Analysis" />
+                <Breadcrumb path="/sentences" title="Example Sentences" />
+                <Breadcrumb path="/ll1-table" title="LL(1) Parsing Table" />
+                <Breadcrumb path="/lr0-table" title="LR(0) Parsing Table" />
+                <Breadcrumb path="/lr0-automaton" title="LR(0) Automaton" />
+                <Breadcrumb path="/lr1-table" title="LR(1) Parsing Table" />
+                <Breadcrumb path="/lr1-automaton" title="LR(1) Automaton" />
+                <Breadcrumb path="/slr1-table" title="SLR(1) Parsing Table" />
+                <Breadcrumb path="/lalr1-table" title="LALR(1) Parsing Table" />
+                <Breadcrumb path="/lalr1-automaton" title="LALR(1) Automaton" />
+              </nav>
+            </header>
       
-          <p>
-            <Breadcrumb path="/" title="Analysis" />
-            <Breadcrumb path="/sentences" title="Example Sentences" />
-            <Breadcrumb path="/ll1-table" title="LL(1) Parsing Table" />
-            <Breadcrumb path="/lr0-table" title="LR(0) Parsing Table" />
-            <Breadcrumb path="/lr0-automaton" title="LR(0) Automaton" />
-            <Breadcrumb path="/lr1-table" title="LR(1) Parsing Table" />
-            <Breadcrumb path="/lr1-automaton" title="LR(1) Automaton" />
-            <Breadcrumb path="/slr1-table" title="SLR(1) Parsing Table" />
-            <Breadcrumb path="/lalr1-table" title="LALR(1) Parsing Table" />
-            <Breadcrumb path="/lalr1-automaton" title="LALR(1) Automaton" />
-          </p>
-      
-          {detail}
+            {detail}
+          
+          </section>
           
         </div>
       </Router>

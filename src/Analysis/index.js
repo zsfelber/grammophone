@@ -8,25 +8,28 @@ import Parsing from './Parsing';
 class Analysis extends Component {
   render() {
     return (
-      <div>
-        <h2>Sanity Checks</h2>
-        
-        <Sanity grammar={this.props.grammar} />
-      
-        <h2>Example Sentences</h2>
-        
-        <Sentences grammar={this.props.grammar} />
-    
-        <p><Link to="/sentences">More example sentences</Link></p>
-      
-        <h2>Nonterminals</h2>
-        
-        <Nonterminals grammar={this.props.grammar} />
-      
-        <h2>Parsing Algorithms</h2>
-        
-        <Parsing grammar={this.props.grammar} />
-      </div>
+      <React.Fragment>
+        <article id="sanity">
+          <h1>Sanity Checks</h1>
+          <Sanity grammar={this.props.grammar} />
+        </article>
+
+        <article id="sentences">
+          <h1>Example Sentences</h1>
+          <Sentences grammar={this.props.grammar} />
+          <p><Link to="/sentences">More example sentences</Link></p>
+        </article>
+
+        <article id="nonterminals">
+          <h1>Nonterminals</h1>
+          <Nonterminals grammar={this.props.grammar} />
+        </article>
+
+        <article id="parsing">
+          <h1>Parsing Algorithms</h1>
+          <Parsing grammar={this.props.grammar} />
+        </article>
+      </React.Fragment>
     );
   }
 }

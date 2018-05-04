@@ -61,7 +61,7 @@ class SLR1Table extends Component {
     });
     
     return (
-      <div>
+      <article id="table">
         <table className="symbols lr1-table">
           <colgroup>
             <col />
@@ -87,7 +87,7 @@ class SLR1Table extends Component {
             {states}
           </tbody>
         </table>
-      </div>
+      </article>
     );
   }
 }

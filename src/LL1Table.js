@@ -36,7 +36,7 @@ class LL1Table extends Component {
     });
     
     return (
-      <div>
+      <article id="table">
         <table className="symbols ll1-table">
           <colgroup>
             <col />
@@ -58,7 +58,7 @@ class LL1Table extends Component {
             {nonterminals}
           </tbody>
         </table>
-      </div>
+      </article>
     );
   }
 }

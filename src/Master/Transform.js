@@ -84,15 +84,15 @@ class Transform extends Component {
     });
     
     return (
-      <React.Fragment>
-        <h1>Transform</h1>
-      
-        <table className="symbols productions">
-          <tbody>
-            {rows}
-          </tbody>
-        </table>
-      </React.Fragment>
+      <section id="transform">
+        <article>
+          <table className="symbols productions">
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
+        </article>
+      </section>
     );
   }
 }

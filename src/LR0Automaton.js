@@ -28,9 +28,9 @@ ${edges}
 }`; 
     
     return (
-      <div>
+      <article id="automaton">
         <Graph src={graph}/>
-      </div>
+      </article>
     );
   }
 }
