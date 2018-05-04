@@ -36,7 +36,7 @@ class Parsing extends Component {
                 {formatClassification(classification, "slr1", "SLR(1)")}
               </td>
               <td>
-                Parsing table
+                <Link to="/slr1-table">Parsing table</Link>
               </td>
             </tr>
 
@@ -46,8 +46,7 @@ class Parsing extends Component {
                 {formatClassification(classification, "lr1", "LR(1)")}
               </td>
               <td>
-                Automaton,
-                Parsing table
+                <Link to="/lr1-automaton">Automaton</Link>, <Link to="/lr1-table">Parsing table</Link>
               </td>
             </tr>
 
@@ -57,8 +56,7 @@ class Parsing extends Component {
                 {formatClassification(classification, "lalr1", "LALR(1)")}
               </td>
               <td>
-                Automaton,
-                Parsing table
+                <Link to="/lalr1-automaton">Automaton</Link>, <Link to="/lalr1-table">Parsing table</Link>
               </td>
             </tr>
           </tbody>
