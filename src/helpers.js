@@ -137,6 +137,40 @@ export function escapeHTML(string) {
   .replace(/"/g, "&quot;");
 }
 
+const TransformationFormatters = {
+  expand(transformation, grammar) {
+    /* jshint unused: false */
+    return "Expand Nonterminal";
+  },
+
+  removeImmediateLeftRecursion(transformation, grammar) {
+    /* jshint unused: false */
+    return "Remove Immediate Left Recursion";
+  },
+
+  leftFactor(transformation, grammar) {
+    /* jshint unused: false */
+    const productions = grammar.calculate('grammar.productions');
+    const symbols = productions[transformation.production].slice(1, transformation.length + 1);
+    
+    return "Left Factor " + symbols.map(plainFormatSymbol).join(' ');
+  },
+
+  epsilonSeparate(transformation, grammar) {
+    /* jshint unused: false */
+    return "Epsilon-Separate";
+  },
+
+  removeUnreachable(transformation, grammar) {
+    /* jshint unused: false */
+    return "Remove Unreachable Nonterminal";
+  }
+};
+
+export function formatTransformation(transformation, grammar) {
+  return TransformationFormatters[transformation.name](transformation, grammar) || transformation.name;
+}
+
 
 // const END = require('./grammar/symbols').END;
 //

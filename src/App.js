@@ -11,6 +11,7 @@ import LR1Automaton from './LR1Automaton';
 import SLR1Table from './SLR1Table';
 import LALR1Table from './LALR1Table';
 import LALR1Automaton from './LALR1Automaton';
+import Master from './Master';
 import './App.css';
 
 const Breadcrumb = ({ path, title, isRoot }) => {
@@ -37,17 +38,7 @@ S ->`;
     this.handleChange = this.handleChange.bind(this);
   }
   
-  handleChange(event) {
-    let src = event.target.value;
-    let grammar;
-    let error;
-    
-    try {
-      grammar = Grammar.parse(src);
-    } catch (e) {
-      error = e;
-    }
-    
+  handleChange({ src, grammar, error }) {
     this.setState({ src, grammar, error });
   }
   
@@ -78,9 +69,7 @@ S ->`;
     return (
       <Router>
         <div>
-          <h1>Editor</h1>
-      
-          <textarea className="editor" value={this.state.src} onChange={this.handleChange} />
+          <Master src={this.state.src} grammar={this.state.grammar} onChange={this.handleChange} />
       
           <hr />
       
