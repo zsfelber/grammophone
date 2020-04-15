@@ -4,6 +4,8 @@ const Relations = require('../../../relations');
 
 module.exports["grammar.cycle"] = function(grammar) {
 
+  console.log("grammar.cycle");
+
   const nonterminals = grammar.calculate("grammar.nonterminals");
   const nullable = grammar.calculate("grammar.nullable");
   const productions = grammar.calculate("grammar.productions");

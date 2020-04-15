@@ -2,6 +2,8 @@
 
 module.exports["grammar.nullable"] = function(grammar) {
 
+  console.log("grammar.nullable");
+
   const productions = grammar.calculate("grammar.productions");
 
   let nullable = {};

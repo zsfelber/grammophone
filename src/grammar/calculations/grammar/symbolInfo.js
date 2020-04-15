@@ -2,6 +2,8 @@
 
 module.exports["grammar.symbolInfo"] = function(grammar) {
 
+  console.log("grammar.symbolInfo");
+
   let terminalOrder = [];
   let nonterminalOrder = [];
   let productionOrder = [];

@@ -94,6 +94,7 @@ class Grammar {
   static parse(spec) {
     var result = null, productions = null;
     try {
+      console.log("grammar.parse")
       result = Parser.parse(spec);
       productions = flattenNode(result);
       return { grammar: new Grammar(productions), spec: spec };

@@ -2,6 +2,8 @@
 
 module.exports["grammar.nonterminals"] = function(grammar) {
 
+  console.log("grammar.nonterminals");
+
   const productions = grammar.calculate("grammar.productions");
 
   let nonterminals = {};

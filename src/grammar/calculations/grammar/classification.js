@@ -2,6 +2,8 @@
 
 module.exports["grammar.classification"] = function(grammar) {
 
+  console.log("grammar.classification");
+
   return {
     "ll1": grammar.calculate("parsing.ll.ll1_classification"),
     "lr0": grammar.calculate("parsing.lr.lr0_classification"),

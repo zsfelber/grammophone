@@ -2,6 +2,8 @@
 
 module.exports["grammar.ambiguous"] = function(grammar) {
 
+  console.log("grammar.ambiguous");
+
   const sentences = grammar.calculate("grammar.sentences");
 
   for (let i = 0; i < sentences.length - 1; i++) {

@@ -4,6 +4,8 @@ const Relations = require('../../../relations');
 
 module.exports["grammar.unreachable"] = function(grammar) {
 
+  console.log("grammar.unreachable");
+
   const nonterminals = grammar.calculate("grammar.nonterminals");
   const start = grammar.calculate("grammar.start");
   const productions = grammar.calculate("grammar.productions");

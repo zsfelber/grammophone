@@ -5,6 +5,8 @@ const END = require('../../symbols').END;
 
 module.exports["grammar.follow"] = function(grammar) {
 
+  console.log("grammar.follow");
+
   let immediate, propagation, result;
   const first = grammar.calculate("grammar.first");
   const nullable = grammar.calculate("grammar.nullable");

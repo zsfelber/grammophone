@@ -2,6 +2,8 @@
 
 module.exports["grammar.unrealizable"] = function(grammar) {
 
+  console.log("grammar.unrealizable");
+
   const nonterminals = grammar.calculate("grammar.nonterminals");
   const productions = grammar.calculate("grammar.productions");
 
