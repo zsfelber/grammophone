@@ -178,8 +178,8 @@ function peg$parse(input, options) {
               location: location()
             };
           },
-      peg$c6 = function(expr, mul) {
-            expr.mul = mul;
+      peg$c6 = function(expr, mulseq) {
+            expr.mul = mulseq[1];
       	  return expr;
         },
       peg$c7 = function(expr) {

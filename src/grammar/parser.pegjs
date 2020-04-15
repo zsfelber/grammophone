@@ -57,8 +57,8 @@ SequenceExpression
     }
 
 PrimaryExpressionWithMul
-  = expr:PrimaryExpression mul:(_ MultiplicityMarker ?) {
-      expr.mul = mul;
+  = expr:PrimaryExpression mulseq:(_ MultiplicityMarker ?) {
+      expr.mul = mulseq[1];
 	  return expr;
   }
 

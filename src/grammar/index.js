@@ -4,49 +4,60 @@ const Calculations = require('./calculations');
 const Parser = require('./parser');
 const END = require('./symbols').END;
 
-function generateName(node, gen) {
+function generateName(gen) {
   let grule = gen.cache[gen.current_rule];
   if (!grule) gen.cache[gen.current_rule] = grule = {cnt:0};
   let gname = gen.current_rule+"_"+(grule.cnt++);
   return {gname};
 }
 
-function mayGenerateMulRule(node, gen) {
+function mayGenerateMulRule(name, mul, gen) {
   var gname = null;
-  switch (node.mul) {
+  switch (mul) {
 	case '+':
-		{gname} = generateName(node, gen);
-		gen.rules.push([[gname, node.name]]);
+		var {gname:_gname} = generateName(gen);
+		gname = _gname;
+		gen.rules.push([[gname, name]]);
 		break;
 	case '*':
 	case '?':
-		{gname} = generateName(node, gen);
+		var {gname:_gname} = generateName(gen);
+		gname = _gname;
 		gen.rules.push([[gname]]);
 		break;
   }
-  switch (node.mul) {
+  switch (mul) {
 	case '+':
 	case '*':
 	case '?':
-		gen.rules.push([[gname, gname, node.name]]);
+		gen.rules.push([[gname, gname, name]]);
 		return {gname:gname};
 	default:
-		return {gname:node.name};
+		return {gname:name};
   }
 }
 
 function generateParenRule(node, gen) {
-	var {gname} = generateName(node, gen);
-	let genrulenode = {
-		type : "rule",
-		name : gname,
-        choice : node.expression,
-        location : node.location,
-		mul : node.mul
-	};
-	gen.rules.push(flattenNode(genrulenode, gen));
-	{gname} = mayGenerateMulRule(genrulenode, gen);
+	var {gname} = generateName(gen);
+	r = extractChoice(node.expression, gname, gen);
+    gen.rules = gen.rules.concat(r);
+	var {gname:_gname} = mayGenerateMulRule(gname, node.mul, gen);
+	gname = _gname;
 	return {gname};
+}
+
+function extractChoice(choiceNode, name, gen) {
+    let parentrule = gen.current_rule;
+	gen.current_rule = name;
+    let choice = flattenNode(choiceNode, gen);
+	var r;
+    if (choice.length > 0) {
+      r = choice.map(c => [name].concat(c));
+    } else {
+      r = [[name]];
+    }
+	gen.current_rule = parentrule;
+	return r;
 }
 
 function flattenNode(node, gen) {
@@ -59,22 +70,14 @@ function flattenNode(node, gen) {
 	r = r.concat(gen.rules);
 	return r;
   case 'rule':
-    let parentrule = gen.current_rule;
-	gen.current_rule = node.name;
-    let choice = flattenNode(node.choice, gen);
-    if (choice.length > 0) {
-      r = choice.map(c => [node.name].concat(c));
-    } else {
-      r = [[node.name]];
-    }
-	gen.current_rule = parentrule;
+	r = extractChoice(node.choice, node.name, gen);
 	return r;
   case 'choice':
     return node.alternatives.map(a => flattenNode(a, gen));
   case 'sequence':
     return node.elements.reduce((list, e) => list.concat(flattenNode(e, gen)), []);
   case 'symbol':
-	var {gname} = mayGenerateMulRule(node, gen);
+	var {gname} = mayGenerateMulRule(node.name, node.mul, gen);
     return [gname];
   case 'epsilon':
     return [];
