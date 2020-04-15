@@ -4,7 +4,51 @@ const Calculations = require('./calculations');
 const Parser = require('./parser');
 const END = require('./symbols').END;
 
-var gen = {};
+function generateName(node, gen) {
+  let grule = gen.cache[gen.current_rule];
+  if (!grule) gen.cache[gen.current_rule] = grule = {cnt:0};
+  let gname = gen.current_rule+"_"+(grule.cnt++);
+  return {gname};
+}
+
+function generateMulRule(node, gen) {
+  var gname = null;
+  switch (node.mul) {
+	case '+':
+		{gname} = generateName(node, gen);
+		gen.rules.push([[gname, node.name]]);
+		break;
+	case '*':
+	case '?':
+		{gname} = generateName(node, gen);
+		gen.rules.push([[gname]]);
+		break;
+  }
+  switch (node.mul) {
+	case '+':
+	case '*':
+	case '?':
+		gen.rules.push([[gname, gname, node.name]]);
+		return {gname:gname};
+	default:
+		return {gname:node.name};
+  }
+}
+
+function generateParenRule(node, gen) {
+	var {gname} = generateName(node, gen);
+	let genrulenode = {
+		type:"rule",
+		name:gname,
+        choice: node.expression,
+        location: node.location,
+		mul: node.mul
+	};
+	gen.rules.push(flattenNode(genrulenode, gen));
+	{gname} = generateMulRule(genrulenode, gen);
+	return {gname};
+}
+
 function flattenNode(node, gen) {
   if (!gen) gen = {cache:{},rules:[]};
   var r;
@@ -30,19 +74,12 @@ function flattenNode(node, gen) {
   case 'sequence':
     return node.elements.reduce((list, e) => list.concat(flattenNode(e, gen)), []);
   case 'symbol':
-    return [node.name];
+	var {gname} = generateMulRule(node, gen);
+    return [gname];
   case 'epsilon':
     return [];
   case 'parenexp':
-    let grule = gen.cache[gen.current_rule];
-	if (!grule) gen.cache[gen.current_rule] = grule = {cnt:0};
-    let gname = gen.current_rule+"_"+(grule.cnt++);
-	gen.rules.push(flattenNode({
-		type:"rule",
-		name:gname,
-        choice: node.expression,
-        location: node.location
-	}, gen));
+	var {gname} = generateParenRule(node, gen);
     return [gname];
   }
 }
