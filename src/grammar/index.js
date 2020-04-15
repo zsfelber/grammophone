@@ -139,9 +139,12 @@ class Grammar {
     }
 
     if (typeof this.calculations[name] === "undefined") {
-      console.log("New calculation : "+name);
+      console.log(new Date()+"  New calculation : "+name);
 
       this.calculations[name] = Calculations[name](this);
+
+      console.log(new Date()+"  Finished : "+name);
+      console.log("");
     }
 
     return this.calculations[name];

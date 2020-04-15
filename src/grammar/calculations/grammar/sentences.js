@@ -57,8 +57,6 @@ const MAX_SENTENCES = 30;
 
 module.exports["grammar.sentences"] = function(grammar) {
 
-  console.log("grammar.sentences");
-
   const start = grammar.calculate("grammar.start");
 
   let sentences = [];
