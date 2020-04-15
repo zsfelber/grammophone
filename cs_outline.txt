@@ -1,0 +1,391 @@
+
+NonOp
+  // literals
+  -> TOK_INT_LITERAL
+  | TOK_FLOAT_LITERAL
+  | TOK_STRING_LITERAL
+  | TOK_CHAR_LITERAL
+
+  | TOK_RANK_SPECIFIER
+  | TOK_GENDIMS_SPECIFIER
+
+  // keywords
+  | TOK_ABSTRACT
+  | TOK_BASE
+  | TOK_BOOL
+  | TOK_BREAK
+  | TOK_BYTE
+  | TOK_CASE
+  | TOK_CATCH
+  | TOK_CHAR
+  | TOK_CHECKED
+  | TOK_CLASS
+  | TOK_CONST
+  | TOK_CONTINUE
+  | TOK_DEFAULT
+  | TOK_DELEGATE
+  | TOK_DO
+  | TOK_DOUBLE
+  | TOK_ELSE
+  | TOK_ENUM
+  | TOK_EVENT
+  | TOK_EXPLICIT
+  | TOK_FALSE
+  | TOK_FINALLY
+  | TOK_FLOAT
+  | TOK_FOR
+  | TOK_FOREACH
+  | TOK_FROM
+  | TOK_GOTO
+  | TOK_IF
+  | TOK_IMPLICIT
+  | TOK_IN
+  | TOK_INT
+  | TOK_INTERFACE
+  | TOK_INTERNAL
+  | TOK_LOCK
+  | TOK_LONG
+  | TOK_NAMESPACE
+  | TOK_NEW
+  | TOK_NULL
+  | TOK_OBJECT
+  | TOK_OPERATOR
+  | TOK_ORDERBY
+  | TOK_OUT
+  | TOK_OVERRIDE
+  | TOK_PARAMS
+  | TOK_PRIVATE
+  | TOK_PROTECTED
+  | TOK_PUBLIC
+  | TOK_READONLY
+  | TOK_REF
+  | TOK_RETURN
+  | TOK_SBYTE
+  | TOK_SEALED
+  | TOK_SELECT
+  | TOK_SHORT
+  | TOK_SIZEOF
+  | TOK_STATIC
+  | TOK_STRING
+  | TOK_STRUCT
+  | TOK_SWITCH
+  | TOK_THIS
+  | TOK_THROW
+  | TOK_TRUE
+  | TOK_TRY
+  | TOK_TYPEOF
+  | TOK_UINT
+  | TOK_ULONG
+  | TOK_UNCHECKED
+  | TOK_UNSAFE
+  | TOK_USHORT
+  | TOK_VIRTUAL
+  | TOK_VOID
+  | TOK_VOLATILE
+  | TOK_VAR
+  | TOK_WHILE
+
+
+  // unary operators
+  |"++" 
+  |"--"
+  | TOK_RIGHT_ARROW
+  | TOK_BANG
+  | TOK_TILDE
+  | TOK_EXTERN
+  | TOK_USING
+  
+
+
+
+Identifier 
+  -> TOK__ARGLIST
+  |  TOK_ADD     
+  |  TOK_ASCENDING
+  |  TOK_ASSEMBLY 
+  |  TOK_BY      
+  |  TOK_DECIMAL 
+  |  TOK_DESCENDING
+  |  TOK_DYNAMIC   
+  |  TOK_EQUALS    
+  |  TOK_FIELD     
+  |  TOK_FIXED     
+  |  TOK_GET       
+  |  TOK_GROUP    
+  |  TOK_INTO     
+  |  TOK_JOIN     
+  |  TOK_LET      
+  |  TOK_METHOD  
+  |  TOK_MODULE   
+  |  TOK_ON       
+  |  TOK_PARAM    
+  |  TOK_PARTIAL  
+  |  TOK_PROPERTY              
+  |  TOK_REMOVE                
+  |  TOK_SET                   
+  |  TOK_STACKALLOC            
+  |  TOK_TYPE                  
+  |  TOK_WHERE                 
+  |  TOK_YIELD                 
+  |  TOK_NAME
+
+  |  TOK_ALIAS                 
+
+
+
+
+Everything
+  -> NonOp                                                                 
+  |  NonOp s:Everything                                                    
+
+
+
+BinOpAssignment
+  ->"="
+  | "*="
+  | "/="
+  | "%="
+  | "+="
+  | "-="
+  | "&="
+  | "|="
+  | "^="
+  | "<<="
+  | ">>="
+;
+
+BinOpEquality
+  ->"=="
+  | "!="
+;
+
+OpNonshift
+  ->">"
+  | "ws>"
+;
+
+BinOpRelational
+  ->OpNonshift //forbid_next(OpNonshift)
+  | "<"
+  | "<="
+  | ">="
+;
+
+BinOpTpRelational
+  ->"is"
+  | "as"
+;
+
+BinOpShift
+  ->"<<"
+  | ">" ">"                                                        
+;
+
+BinOpAdditive
+  ->"+"
+  | "-"
+;
+
+BinOpMultiplicative
+  ->"*"
+  | "/"
+  | "%"
+;
+
+BinOpAccess
+  ->"."
+  | "->"
+;
+
+VarType
+  -> empty                                                                 
+  |  "in"
+  | "out"
+;
+
+
+// level 0 -------------------
+
+FragmentSemicolonList
+  -> FragmentCommaList
+  |  FragmentSemicolonList ";" FragmentCommaList                     
+;
+
+FragmentCommaList
+  -> FragmentAssignment
+  |  FragmentCommaList "," FragmentAssignment                        
+;
+
+FragmentAssignment
+  -> FragmentConditional
+
+  |  FragmentAssignment BinOpAssignment FragmentConditional          
+;
+
+FragmentConditional
+  -> FragmentCoalescing
+
+  |  FragmentCoalescing "?" FragmentAssignment ":" FragmentConditional 
+;
+
+FragmentCoalescing
+  -> FragmentOrOr
+
+  |  FragmentCoalescing "??" FragmentOrOr                            
+;
+
+FragmentOrOr
+  -> FragmentAndAnd
+
+  |  FragmentOrOr "||" FragmentAndAnd                                
+;
+
+FragmentAndAnd
+  -> FragmentOr
+
+  |  FragmentAndAnd "&&" FragmentOr                                  
+;
+FragmentOr
+  -> FragmentXor
+
+  |  FragmentOr "|" FragmentXor                                      
+;
+FragmentXor
+  -> FragmentAnd
+
+  |  FragmentXor "^" FragmentAnd                                     
+;
+FragmentAnd
+  -> FragmentEquality
+
+  |  FragmentAnd "&" FragmentEquality                                
+;
+FragmentEquality
+  -> FragmentRelational
+
+  |  FragmentEquality BinOpEquality FragmentRelational               
+;
+FragmentRelational
+  -> FragmentShift
+
+  |  FragmentRelational BinOpRelational FragmentShift                  
+  |  FragmentRelational BinOpTpRelational FragmentShift                
+;
+FragmentShift
+  -> FragmentAdditive
+
+  |  FragmentShift BinOpShift FragmentAdditive                         
+;
+FragmentAdditive
+  -> FragmentMultiplicative
+
+  |  FragmentAdditive BinOpAdditive FragmentMultiplicative             
+;
+FragmentMultiplicative
+  -> FragmentAccess
+
+  |  FragmentMultiplicative BinOpMultiplicative FragmentAccess         
+;
+FragmentAccess
+  -> FragmentOpt
+
+  |  FragmentAccess BinOpAccess Identifier                             
+;
+
+
+FragmentOpt
+   -> empty                                                                  
+   |  Fragment
+
+;
+
+Fragment
+   -> AttrsOrArrayListOpt Fragments                                      
+   |  Parenthesized
+
+   |  Bracketed
+
+   |  Braced
+
+;
+
+Fragments
+   -> TypeUniq
+
+   |  FragmentsEverything
+
+   |  FragmentsEverything TypeUniq                                       
+;
+
+FragmentsEverything
+   -> Everything
+
+   |  FragmentsType s:Everything                                           
+;
+
+FragmentsType
+   -> Type
+
+   |  FragmentsEverything Type                                           
+;
+
+Parenthesized
+   -> FragmentOpt ParamsForCast                                          
+;
+Bracketed
+   -> Fragment AttrsOrArray                                              
+;
+Braced
+   -> FragmentOpt BlockOrInit                                            
+;
+AttrsOrArray
+   -> "[" FragmentCommaList "]"                                            
+;
+ParamsForCast
+   -> "(" FragmentSemicolonList ")"                                        
+;
+BlockOrInit
+   -> "{" FragmentSemicolonList "}"
+;
+
+AttrsOrArrayListOpt
+   -> empty                                                                  
+   |  AttrsOrArrayList
+
+;
+
+AttrsOrArrayList
+   -> AttrsOrArray
+
+   |  AttrsOrArray AttrsOrArrayList                                      
+;
+TypeUniq
+   -> QualifiedIdUniq                                                      
+   |  QualifiedIdUniq "<" TypeArgs ">"                                 
+   |  QualifiedIdNonUniq "<" TypeArgs ">"                              
+;
+Type
+   -> TypeUniq
+
+   |  QualifiedIdNonUniq                                                   
+;
+TypeArg
+   -> AttrsOrArrayListOpt VarType Type                               
+;
+TypeArgs
+   -> TypeArg
+
+   |  TypeArg "," TypeArgs                                             
+;
+
+QualifiedIdUniq
+   -> Identifier                                                           
+   |  Identifier "::" Identifier                                     
+;
+QualifiedIdNonUniq
+   -> QualifiedIdUniq "." Identifier                                 
+   |  QualifiedIdNonUniq "." Identifier                              
+;
+
+
+

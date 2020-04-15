@@ -261,18 +261,18 @@ conditionalexpression
 
 assignmentexpression
    -> conditionalexpression
-   | logicalorexpression asfragment_SIGNmentoperator initializerclause
+   | logicalorexpression assignmentoperator initializerclause
    | throwexpression
    .
 
-asfragment_SIGNmentoperator
+assignmentoperator
    -> '='
    | '*='
    | '/='
    | '%='
    | '+='
    | '-='
-   | rightShiftAsfragment_SIGN
+   | rightShiftAssign
    | '<<='
    | '&='
    | '^='
@@ -478,8 +478,8 @@ simpletypespecifier
    | Short
    | Int
    | Long
-   | fragment_SIGNed
-   | Unfragment_SIGNed
+   | signed
+   | Unsigned
    | Float
    | Double
    | Void
