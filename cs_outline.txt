@@ -144,7 +144,7 @@ Identifier
 
 Everything
   -> NonOp                                                                 
-  |  NonOp s:Everything                                                    
+  |  NonOp Everything                                                    
 ;
 
 
@@ -328,7 +328,7 @@ Fragments
 FragmentsEverything
    -> Everything
 
-   |  FragmentsType s:Everything                                           
+   |  FragmentsType Everything                                           
 ;
 
 FragmentsType
