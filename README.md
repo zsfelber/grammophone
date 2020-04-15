@@ -13,6 +13,13 @@ First, install dependencies:
 
     yarn install
 
+(On Windows 10 I got 'node-sass' installation error because of absolete dependency 'node-gym'. Then it helps:
+npm install -g node-gyp
+remove 'yarn.lock'
+remove 'node_modules'
+yarn install again
+)
+
 To rebuild JavaScript and CSS as files are changed:
 
     yarn run watch

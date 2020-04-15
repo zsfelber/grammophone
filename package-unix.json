@@ -1,0 +1,31 @@
+{
+  "scripts": {
+    "test": "mocha \"test/**/*-test.js\"",
+    "lint": "jshint --exclude ./node_modules,src/grammar/parser.js src",
+    "generate-parser": "pegjs -o src/grammar/parser.js src/grammar/parser.pegjs",
+    "copy-vendor": "mkdir -p dist && cp node_modules/jquery/dist/jquery.slim.min.js dist/jquery.js && cp node_modules/viz.js/viz.js dist/viz.js",
+    "bundle-src": "mkdir -p dist && browserify src/application.js -o dist/application.js --standalone ApplicationController --transform ejsify --transform [ babelify --ignore parser.js ]",
+    "watch-src": "mkdir -p dist && watchify src/application.js -o dist/application.js --standalone ApplicationController --transform ejsify --transform [ babelify --ignore parser.js ]",
+    "bundle-styles": "mkdir -p dist && node-sass styles/application.scss dist/application.css",
+    "watch-styles": "mkdir -p dist && node-sass --watch styles/application.scss dist/application.css",
+    "watch": "npm-run-all --parallel watch-src watch-styles",
+    "dist": "npm-run-all copy-vendor bundle-src bundle-styles"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.1.1",
+    "ejsify": "^1.0.0",
+    "jshint": "^2.9.5",
+    "mocha": "^5.0.4",
+    "node-sass": "^4.7.2",
+    "npm-run-all": "^4.1.2",
+    "pegjs": "^0.10.0",
+    "watchify": "^3.11.0"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "viz.js": "^1.8.1"
+  }
+}
