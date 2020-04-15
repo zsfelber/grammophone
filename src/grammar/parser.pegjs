@@ -62,12 +62,16 @@ PrimaryExpression
     }
 
 SymbolExpression
-  = name:Symbol {
-      return {
+  = name:Symbol opt:(OptionalMark ?) {
+      var r = {
         type: "symbol",
         name: name,
         location: location()
       };
+	  if (opt) {
+	    r.opt = true;
+      }
+	  return r;
     }
 
 EpsilonExpression
@@ -127,6 +131,9 @@ EscapeCharacter
   = "'"
   / '"'
   / "\\"
+
+OptionalMark
+  = "?"
 
 RuleDefinition
   = "->"

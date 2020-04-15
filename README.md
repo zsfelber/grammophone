@@ -28,7 +28,9 @@ To bundle the JavaScript and CSS and copy files to dist/ for distribution:
 
     yarn run dist
 
-[Jison](http://zaach.github.com/jison/) is used to build the app's grammar specification parser, but the parser (src/grammar/parser.js) is checked into the repository. To generate the parser:
+[Jison](http://zaach.github.com/jison/) 
+no [pegjs](http://pegjs.org)
+is used to build the app's grammar specification parser, but the parser (src/grammar/parser.js) is checked into the repository. To generate the parser:
 
     yarn run generate-parser
 
