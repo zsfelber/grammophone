@@ -4,36 +4,59 @@ const Calculations = require('./calculations');
 const Parser = require('./parser');
 const END = require('./symbols').END;
 
-function flattenNode(node) {
+var gen = {};
+function flattenNode(node, gen) {
+  if (!gen) gen = {cache:{},rules:[]};
+  var r;
+
   switch (node.type) {
   case 'grammar':
-    return node.rules.reduce((list, r) => list.concat(flattenNode(r)), []);
+    r = node.rules.reduce((list, r) => list.concat(flattenNode(r, gen)), []);
+	r = r.concat(gen.rules);
+	return r;
   case 'rule':
-    let choice = flattenNode(node.choice);
+    let parentrule = gen.current_rule;
+	gen.current_rule = node.name;
+    let choice = flattenNode(node.choice, gen);
     if (choice.length > 0) {
-      return choice.map(c => [node.name].concat(c));
+      r = choice.map(c => [node.name].concat(c));
     } else {
-      return [[node.name]];
+      r = [[node.name]];
     }
+	gen.current_rule = parentrule;
+	return r;
   case 'choice':
-    return node.alternatives.map(a => flattenNode(a));
+    return node.alternatives.map(a => flattenNode(a, gen));
   case 'sequence':
-    return node.elements.reduce((list, e) => list.concat(flattenNode(e)), []);
+    return node.elements.reduce((list, e) => list.concat(flattenNode(e, gen)), []);
   case 'symbol':
     return [node.name];
   case 'epsilon':
     return [];
+  case 'parenexp':
+    let grule = gen.cache[gen.current_rule];
+	if (!grule) gen.cache[gen.current_rule] = grule = {cnt:0};
+    let gname = gen.current_rule+"_"+(grule.cnt++);
+	gen.rules.push(flattenNode({
+		type:"rule",
+		name:gname,
+        choice: node.expression,
+        location: node.location
+	}, gen));
+    return [gname];
   }
 }
 
 class Grammar {
 
   static parse(spec) {
+	var result=null, productions=null;
     try {
-      let result = Parser.parse(spec);
-      let productions = flattenNode(result);
+      result = Parser.parse(spec);
+      productions = flattenNode(result);
       return { grammar: new Grammar(productions), spec: spec };
     } catch (e) {
+	  console.error("Error:",e, "  spec:",spec, "  result:",result, "  productions:",productions);
       return { error: e, spec: spec };
     }
   }

@@ -41,7 +41,7 @@ ChoiceExpression
     }
 
 SequenceExpression
-  = head:PrimaryExpression tail:(_ PrimaryExpression)* {
+  = head:PrimaryExpressionWithMul tail:(_ PrimaryExpressionWithMul)* {
       return {
         type: "sequence",
         elements: buildList(head, tail, 1),
@@ -56,22 +56,31 @@ SequenceExpression
       };
     }
 
+PrimaryExpressionWithMul
+  = expr:PrimaryExpression mul:(_ MultiplicityMarker ?) {
+      expr.mul = mul;
+	  return expr;
+  }
+
 PrimaryExpression
   = expr:(SymbolExpression / EpsilonExpression) !(_ RuleDefinition) {
   	  return expr;
     }
+  / '(' _ chexpr:ChoiceExpression _ ')' {
+      return {
+        type: "parenexp",
+        expression: chexpr,
+        location: location()
+      };
+    }
 
 SymbolExpression
-  = name:Symbol opt:(OptionalMark ?) {
-      var r = {
+  = name:Symbol {
+      return {
         type: "symbol",
         name: name,
         location: location()
       };
-	  if (opt) {
-	    r.opt = true;
-      }
-	  return r;
     }
 
 EpsilonExpression
@@ -132,8 +141,10 @@ EscapeCharacter
   / '"'
   / "\\"
 
-OptionalMark
+MultiplicityMarker
   = "?"
+  / "*"
+  / "+"
 
 RuleDefinition
   = "->"
