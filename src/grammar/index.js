@@ -11,7 +11,7 @@ function generateName(node, gen) {
   return {gname};
 }
 
-function generateMulRule(node, gen) {
+function mayGenerateMulRule(node, gen) {
   var gname = null;
   switch (node.mul) {
 	case '+':
@@ -38,14 +38,14 @@ function generateMulRule(node, gen) {
 function generateParenRule(node, gen) {
 	var {gname} = generateName(node, gen);
 	let genrulenode = {
-		type:"rule",
-		name:gname,
-        choice: node.expression,
-        location: node.location,
-		mul: node.mul
+		type : "rule",
+		name : gname,
+        choice : node.expression,
+        location : node.location,
+		mul : node.mul
 	};
 	gen.rules.push(flattenNode(genrulenode, gen));
-	{gname} = generateMulRule(genrulenode, gen);
+	{gname} = mayGenerateMulRule(genrulenode, gen);
 	return {gname};
 }
 
@@ -74,7 +74,7 @@ function flattenNode(node, gen) {
   case 'sequence':
     return node.elements.reduce((list, e) => list.concat(flattenNode(e, gen)), []);
   case 'symbol':
-	var {gname} = generateMulRule(node, gen);
+	var {gname} = mayGenerateMulRule(node, gen);
     return [gname];
   case 'epsilon':
     return [];
