@@ -139,6 +139,8 @@ class Grammar {
     }
 
     if (typeof this.calculations[name] === "undefined") {
+      console.log("New calculation : "+name);
+
       this.calculations[name] = Calculations[name](this);
     }
 
