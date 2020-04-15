@@ -1,8 +1,7 @@
 // start -------------------
 
-FragmentSemicolonList
-  -> FragmentCommaList
-  |  FragmentSemicolonList ";" FragmentCommaList                     
+Start
+  -> FragmentSemicolonList EOF
 ;
 
 
@@ -207,13 +206,18 @@ BinOpAccess
 ;
 
 VarType
-  -> empty                                                                 
+  -> #epsilon                                                                 
   |  "in"
   | "out"
 ;
 
 
 // level 0 -------------------
+
+FragmentSemicolonList
+  -> FragmentCommaList
+  |  FragmentSemicolonList ";" FragmentCommaList
+;
 
 FragmentCommaList
   -> FragmentAssignment
@@ -298,7 +302,7 @@ FragmentAccess
 
 
 FragmentOpt
-   -> empty                                                                  
+   -> #epsilon                                                                  
    |  Fragment
 
 ;
@@ -353,7 +357,7 @@ BlockOrInit
 ;
 
 AttrsOrArrayListOpt
-   -> empty                                                                  
+   -> #epsilon                                                                  
    |  AttrsOrArrayList
 
 ;
