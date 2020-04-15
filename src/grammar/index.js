@@ -17,20 +17,22 @@ function mayGenerateMulRule(name, mul, gen) {
 	case '+':
 		var {gname:_gname} = generateName(gen);
 		gname = _gname;
-		gen.rules.push([[gname, name]]);
+		gen.rules.push([gname, name]);
 		break;
 	case '*':
 	case '?':
 		var {gname:_gname} = generateName(gen);
 		gname = _gname;
-		gen.rules.push([[gname]]);
+		gen.rules.push([gname]);
 		break;
   }
   switch (mul) {
 	case '+':
 	case '*':
+		gen.rules.push([gname, gname, name]);
+		return {gname:gname};
 	case '?':
-		gen.rules.push([[gname, gname, name]]);
+		gen.rules.push([gname, name]);
 		return {gname:gname};
 	default:
 		return {gname:name};
@@ -39,9 +41,9 @@ function mayGenerateMulRule(name, mul, gen) {
 
 function generateParenRule(node, gen) {
 	var {gname} = generateName(gen);
-	r = extractChoice(node.expression, gname, gen);
-    gen.rules = gen.rules.concat(r);
+	var r = extractChoice(node.expression, gname, gen);
 	var {gname:_gname} = mayGenerateMulRule(gname, node.mul, gen);
+    gen.rules = gen.rules.concat(r);
 	gname = _gname;
 	return {gname};
 }
