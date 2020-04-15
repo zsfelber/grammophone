@@ -1,3 +1,12 @@
+// start -------------------
+
+FragmentSemicolonList
+  -> FragmentCommaList
+  |  FragmentSemicolonList ";" FragmentCommaList                     
+;
+
+
+// terminals -------------------
 
 NonOp
   // literals
@@ -94,7 +103,7 @@ NonOp
   | TOK_TILDE
   | TOK_EXTERN
   | TOK_USING
-  
+;  
 
 
 
@@ -130,14 +139,14 @@ Identifier
   |  TOK_NAME
 
   |  TOK_ALIAS                 
-
+;
 
 
 
 Everything
   -> NonOp                                                                 
   |  NonOp s:Everything                                                    
-
+;
 
 
 BinOpAssignment
@@ -205,11 +214,6 @@ VarType
 
 
 // level 0 -------------------
-
-FragmentSemicolonList
-  -> FragmentCommaList
-  |  FragmentSemicolonList ";" FragmentCommaList                     
-;
 
 FragmentCommaList
   -> FragmentAssignment
