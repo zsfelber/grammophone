@@ -139,12 +139,27 @@ class Grammar {
     }
 
     if (typeof this.calculations[name] === "undefined") {
-      console.log(new Date()+"  New calculation : "+name);
+      var oldind;
+      if (!this.hasOwnProperty("ident")) {
+        oldind = "";
+        this.indent = "";
+      } else {
+        oldind = this.indent;
+        this.indent += "  ";
+      }
+      try {
+        var t0 = new Date().getTime();
+        console.log(this.indent+"  New calculation : "+name);
 
-      this.calculations[name] = Calculations[name](this);
+        this.calculations[name] = Calculations[name](this);
 
-      console.log(new Date()+"  Finished : "+name);
-      console.log("");
+        var dt = Math.round((new Date().getTime() - t0)/100);
+        console.log(this.indent+"  Finished : "+name+"  in "+(dt/10)+"s");
+      } catch (e) {
+        throw e;
+      } finally {
+        this.indent = oldind;
+      }
     }
 
     return this.calculations[name];

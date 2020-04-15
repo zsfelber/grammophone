@@ -8,13 +8,19 @@ module.exports.automaton = function automaton(grammar, build) {
 
   // While no more states have been added... (outer loop)
 
-  let s = 0;
+  let s = 0, s0 = 0;
+  console.log("automaton  states.length:"+states.length);
 
   while (s < states.length) {
 
     // Process existing states... (inner loop)
 
-    for (let l = states.length; s < l; s++) {
+    for (let slen0 = states.length, slen0__3 = states.length>>3; s < slen0; s++) {
+
+      if ((s-s0) >= slen0__3) {
+        console.log("automaton  Processed "+s+" of states.length:"+states.length);
+        s0 = s;
+      }
 
       let state = states[s];
 
@@ -58,6 +64,8 @@ module.exports.automaton = function automaton(grammar, build) {
     }
 
   }
+
+  console.log("automaton  Processed states.length:"+states.length);
 
   return states;
 
