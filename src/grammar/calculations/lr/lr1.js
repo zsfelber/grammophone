@@ -508,9 +508,13 @@ module.exports["parsing.lr.lalr1_table"] = function(grammar) {
     let state = automaton[i];
     let actions = {};
 
+    // add shift actions for transitions
+
     for (let s in state.transitions) {
       actions[s] = { shift: state.transitions[s] };
     }
+
+    // add reduce actions for completed items
 
     for (let j = 0; j < state.items.length; j++) {
 

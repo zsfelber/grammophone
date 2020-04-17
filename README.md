@@ -41,3 +41,8 @@ Tests
 Currently only the routines in grammar/ have tests. (There are no controller or view tests yet.) To run these:
 
     yarn test
+
+
+zsfelber
+-~------
+Added extended BNF features to internal language specification grammar. It now understands and correctly parses parenthesized expressions and ? * + for primary expressions. Primary expressions consist of terminal symbols, nonterminal symbols, literals and parenthesized expressions. Implementation starts from grammar/index.js/flattenNode which generates temporary extra rules for them and extracts them along with original ones.
