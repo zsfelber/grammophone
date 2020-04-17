@@ -4,89 +4,112 @@ const Calculations = require('./calculations');
 const Parser = require('./parser');
 const END = require('./symbols').END;
 
-function generateName(gen) {
-  let grule = gen.cache[gen.current_rule];
-  if (!grule) gen.cache[gen.current_rule] = grule = { cnt: 0 };
-  let gname = gen.current_rule + "_" + (grule.cnt++);
-  return { gname };
-}
-
-function mayGenerateMulRule(name, mul, gen) {
-  var gname = null;
-  switch (mul) {
-    case '+':
-      var { gname: _gname } = generateName(gen);
-      gname = _gname;
-      gen.rules.push([gname, name]);
-      break;
-    case '*':
-    case '?':
-      var { gname: _gname } = generateName(gen);
-      gname = _gname;
-      gen.rules.push([gname]);
-      break;
+class ProductionsProcessor {
+  constructor() {
+    this.cache = {};
+    this.generatedRules = [];
   }
-  switch (mul) {
-    case '+':
-    case '*':
-      gen.rules.push([gname, gname, name]);
-      return { gname: gname };
-    case '?':
-      gen.rules.push([gname, name]);
-      return { gname: gname };
-    default:
-      return { gname: name };
+
+  generateName() {
+    let grule = this.cache[this.currentRule];
+    if (!grule) this.cache[this.currentRule] = grule = { cnt: 0 };
+    let gname = this.currentRule + "_" + (grule.cnt++);
+    return { gname };
   }
-}
 
-function generateParenRule(node, gen) {
-  var { gname } = generateName(gen);
-  var r = extractChoice(node.expression, gname, gen);
-  var { gname: _gname } = mayGenerateMulRule(gname, node.mul, gen);
-  gen.rules = gen.rules.concat(r);
-  gname = _gname;
-  return { gname };
-}
-
-function extractChoice(choiceNode, name, gen) {
-  let parentrule = gen.current_rule;
-  gen.current_rule = name;
-  let choice = flattenNode(choiceNode, gen);
-  var r;
-  if (choice.length > 0) {
-    r = choice.map(c => [name].concat(c));
-  } else {
-    r = [[name]];
+  extractChoice(choiceNode, name) {
+    let parentrule = this.currentRule;
+    this.currentRule = name;
+    let choice = this.extract(choiceNode);
+    var r;
+    if (choice.length > 0) {
+      r = choice.map(c => [name].concat(c));
+    } else {
+      r = [[name]];
+    }
+    this.currentRule = parentrule;
+    return r;
   }
-  gen.current_rule = parentrule;
-  return r;
-}
 
-function flattenNode(node, gen) {
-  if (!gen) gen = { cache: {}, rules: [] };
-  var r;
-
-  switch (node.type) {
-    case 'grammar':
-      r = node.rules.reduce((list, r) => list.concat(flattenNode(r, gen)), []);
-      r = r.concat(gen.rules);
-      return r;
-    case 'rule':
-      r = extractChoice(node.choice, node.name, gen);
-      return r;
-    case 'choice':
-      return node.alternatives.map(a => flattenNode(a, gen));
-    case 'sequence':
-      return node.elements.reduce((list, e) => list.concat(flattenNode(e, gen)), []);
-    case 'symbol':
-      var { gname } = mayGenerateMulRule(node.name, node.mul, gen);
-      return [gname];
-    case 'epsilon':
-      return [];
-    case 'parenexp':
-      var { gname } = generateParenRule(node, gen);
-      return [gname];
+  mayGenerateMulRule(name, mul) {
+    var gname = null;
+    switch (mul) {
+      case '+':
+        var { gname: _gname } = this.generateName();
+        gname = _gname;
+        this.generatedRules.push([gname, name]);
+        break;
+      case '*':
+      case '?':
+        var { gname: _gname } = this.generateName();
+        gname = _gname;
+        this.generatedRules.push([gname]);
+        break;
+    }
+    switch (mul) {
+      case '+':
+      case '*':
+        this.generatedRules.push([gname, gname, name]);
+        return { gname: gname };
+      case '?':
+        this.generatedRules.push([gname, name]);
+        return { gname: gname };
+      default:
+        return { gname: name };
+    }
   }
+
+  generateParenRule(node) {
+    var { gname } = this.generateName();
+    var r = this.extractChoice(node.expression, gname);
+    var { gname: _gname } = this.mayGenerateMulRule(gname, node.mul);
+    this.generatedRules = this.generatedRules.concat(r);
+    gname = _gname;
+    return { gname };
+  }
+
+  extract(node) {
+    var r;
+
+    switch (node.type) {
+      case 'grammar':
+        r = node.rules.reduce((list, r) => list.concat(this.extract(r)), []);
+        return r;
+      case 'rule':
+        r = this.extractChoice(node.choice, node.name);
+        return r;
+      case 'choice':
+        r = node.alternatives.map(a => this.extract(a));
+        return r;
+      case 'sequence':
+        r = node.elements.reduce((list, e) => list.concat(this.extract(e)), []);
+        return r;
+      case 'symbol':
+        var { gname } = this.mayGenerateMulRule(node.name, node.mul);
+        r = [gname];
+        return r;
+      case 'epsilon':
+        r = [];
+        return r;
+      case 'parenexp':
+        var { gname } = this.generateParenRule(node);
+        r = [gname];
+        return r;
+      default:
+        throw new Error("Unknown node type : "+node.type);
+      }
+  }
+
+  /**
+   * Entry point
+   * @param {*} node 
+   */
+  process(node) {
+    var r = this.extract(node);
+    r = r.concat(this.generatedRules);
+    return r;
+  }
+
 }
 
 class Grammar {
@@ -96,7 +119,7 @@ class Grammar {
     try {
       console.log("grammar.parse")
       result = Parser.parse(spec);
-      productions = flattenNode(result);
+      productions = new ProductionsProcessor().process(result);
       return { grammar: new Grammar(productions), spec: spec };
     } catch (e) {
       console.error("Error:", e, "  spec:", spec, "  result:", result, "  productions:", productions);
