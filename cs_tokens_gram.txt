@@ -343,7 +343,7 @@ Universalcharactername
   .
 
 Hexquad
-  -> HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT
+  -> Hexadigit Hexadigit Hexadigit Hexadigit
   .
 
 Literal
@@ -357,41 +357,47 @@ Literal
 
 
 Integerliteral
-  -> Decimalliteral Integersuffix? | Octalliteral Integersuffix? | Hexadecimalliteral Integersuffix? | Binaryliteral Integersuffix?
+  -> Decimalliteral INTEGERSUFFIX? | Octalliteral INTEGERSUFFIX? | Hexadecimalliteral INTEGERSUFFIX? | Binaryliteral INTEGERSUFFIX?
   .
 
 
 Decimalliteral
-  -> NONZERODIGIT DigitsOpt
+  -> DigitNZ DigitsOpt
   .
 
 
 Octalliteral
-  -> "0" OCTALDIGIT*
+  -> "0" Octaldigit*
   .
 
 
 Hexadecimalliteral
-  -> ("0x" | "0X") HEXADECIMALDIGIT*
+  -> ("0x" | "0X") Hexadigit*
   .
 
 
 Binaryliteral
-  -> ("0b" | "0B") BINARYDIGIT*
+  -> ("0b" | "0B") Bindigit*
   .
 
-Integersuffix
-  -> Unsignedsuffix Longsuffix? | Unsignedsuffix Longlongsuffix? | Longsuffix Unsignedsuffix? | Longlongsuffix Unsignedsuffix?
+INTEGERSUFFIX
+  -> UNSIGNEDSUFFIX | INTEGERTYPESUFFIX | UNSIGNEDSUFFIX INTEGERTYPESUFFIX | INTEGERTYPESUFFIX UNSIGNEDSUFFIX
   .
-
 
 Floatingliteral
-  -> Fractionalconstant Exponentpart? Floatingsuffix? | Digits Exponentpart Floatingsuffix?
+  -> Fractionalconstant Exponentpart? FLOATINGTYPESUFFIX? | Digits Exponentpart FLOATINGTYPESUFFIX?
   .
 
+INTEGERTYPESUFFIX
+ -> "l" | "L" | "i" | "I" | "s" | "S"
+ .
+
+FLOATINGTYPESUFFIX
+ -> "d" | "D" | "f" | "F"
+ .
 
 Fractionalconstant
-  -> DigitsOpt DOT DigitsOpt  .
+  -> Decimalliteral DOT DigitsOpt  |  "0" DOT DigitsOpt  |  DOT  Digits  .
   .
 
 
@@ -423,4 +429,20 @@ Digits ->  Digit  DigitsOpt  .
 
 DigitsOpt ->  Digit*  .
 
-Digit -> NONZERODIGIT | "0"
+
+Hexadigit -> "0" | HexadigitNZ
+
+Digit -> "0" | DigitNZ
+
+Octaldigit -> "0" | OctaldigitNZ
+
+Bindigit -> "0" | "1"
+
+
+HexadigitNZ -> DigitNZ | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F"
+
+DigitNZ -> OctaldigitNZ | "8" | "9"
+
+OctaldigitNZ -> "1" | "2" | "3" | "4" | "5" | "6" | "7"
+
+

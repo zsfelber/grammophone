@@ -122,10 +122,10 @@ IdentifierCharacter "identifier character"
 
 String "string"
   = '"' chars:DoubleStringCharacter* '"' {
-      return chars.join("");
+      return '"'+chars.join("")+'"';
     }
   / "'" chars:SingleStringCharacter* "'" {
-      return chars.join("");
+      return "'"+chars.join("")+"'";
     }
 
 DoubleStringCharacter
