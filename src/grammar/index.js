@@ -129,6 +129,8 @@ class Grammar {
 
   constructor(productions) {
 
+    theGrammar = this;
+
     // Check for reserved and empty symbols
 
     for (let i = 0; i < productions.length; i++) {

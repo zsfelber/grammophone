@@ -1,0 +1,457 @@
+Start ->  Anything* EOF .
+
+Anything ->
+  ReservedWord | Identifier | Operator | Literal  .
+
+Anything ->
+  ReservedWord | Identifier | Operator | Literal  .
+
+ReservedWord
+  -> ABSTRACT
+  | AS
+  | BASE
+  | BOOL
+  | BREAK
+  | BYTE
+  | CASE
+  | CATCH
+  | CHAR
+  | CHECKED
+  | CLASS
+  | CONST
+  | CONTINUE
+  | DEFAULT
+  | DELEGATE
+  | DO
+  | DOUBLE
+  | ELSE
+  | ENUM
+  | EVENT
+  | EXPLICIT
+  | EXTERN
+  | FALSE
+  | FINALLY
+  | FLOAT
+  | FOR
+  | FOREACH
+  | FROM
+  | GOTO
+  | IF
+  | IMPLICIT
+  | IN
+  | INT
+  | INTERFACE
+  | INTERNAL
+  | IS
+  | LOCK
+  | LONG
+  | NAMESPACE
+  | NEW
+  | NULL
+  | OBJECT
+  | OPERATOR
+  | ORDERBY
+  | OUT
+  | OVERRIDE
+  | PARAMS
+  | PRIVATE
+  | PROTECTED
+  | PUBLIC
+  | READONLY
+  | REF
+  | RETURN
+  | SBYTE
+  | SEALED
+  | SELECT
+  | SHORT
+  | SIZEOF
+  | STATIC
+  | STRING
+  | STRUCT
+  | SWITCH
+  | THIS
+  | THROW
+  | TRUE
+  | TRY
+  | TYPEOF
+  | UINT
+  | ULONG
+  | UNCHECKED
+  | UNSAFE
+  | USHORT
+  | USING
+  | VIRTUAL
+  | VOID
+  | VOLATILE
+  | VAR
+  | WHILE
+  // ?
+  | _ARGLIST
+  |  ADD     
+  |  ASCENDING
+  |  ASSEMBLY 
+  |  BY      
+  |  DECIMAL 
+  |  DESCENDING
+  |  DYNAMIC   
+  |  EQUALS    
+  |  FIELD     
+  |  FIXED     
+  |  GET       
+  |  GROUP    
+  |  INTO     
+  |  JOIN     
+  |  LET      
+  |  METHOD  
+  |  MODULE   
+  |  ON       
+  |  PARAM    
+  |  PARTIAL  
+  |  PROPERTY              
+  |  REMOVE                
+  |  SET                   
+  |  STACKALLOC            
+  |  TYPE                  
+  |  WHERE                 
+  |  YIELD                 
+  |  ALIAS
+.
+
+Operator
+  ->
+  // operators
+    LPAREN
+  | RPAREN
+  | LBRACKET
+  | RBRACKET
+  //ARROW
+  //RIGHT_ARROW
+  | DOT
+  | BANG
+  | TILDE
+  | PLUS
+  | MINUS
+  | PLUSPLUS
+  | MINUSMINUS
+  | AND
+  | STAR
+  | SLASH
+  | PERCENT
+  //LEFTSHIFT
+  //RIGHTSHIFT
+  | LESSTHAN
+  //LESSEQ
+  | GREATERTHAN
+  //GREATEREQ
+  | EQUALEQUAL
+  | NOTEQUAL
+  | XOR
+  | OR
+  | ANDAND
+  | OROR
+  | QUESTION
+  | COALESCING
+  | COLON
+  | COLON_COLON
+  | EQUAL
+  | STAREQUAL
+  | SLASHEQUAL
+  | PERCENTEQUAL
+  | PLUSEQUAL
+  | MINUSEQUAL
+  | ANDEQUAL
+  | XOREQUAL
+  | OREQUAL
+  //LEFTSHIFTEQUAL
+  //RIGHTSHIFTEQUAL
+  | COMMA
+  | SEMICOLON
+  | LBRACE
+  | RBRACE
+.
+
+
+// keywords
+_ARGLIST ->            "__arglist"  .
+ABSTRACT ->            "abstract"  .
+ADD ->                 "add"  .
+ALIAS ->               "alias"  .
+ASCENDING ->           "ascending"  .
+AS ->                  "as"  .
+ASSEMBLY ->            "assembly"  .
+BASE ->                "base"  .
+BOOL ->                "bool"  .
+BREAK ->               "break"  .
+BY ->                  "by"  .
+BYTE ->                "byte"  .
+CASE ->                "case"  .
+CATCH ->               "catch"  .
+CHAR ->                "char"  .
+CHECKED ->             "checked"  .
+CLASS ->               "class"  .
+CONST ->               "const"  .
+CONTINUE ->            "continue"  .
+DECIMAL ->             "decimal"  .
+DEFAULT ->             "default"  .
+DELEGATE ->            "delegate"  .
+DESCENDING ->          "descending"  .
+DO ->                  "do"  .
+DOUBLE ->              "double"  .
+DYNAMIC ->             "dynamic"  .
+ELSE ->                "else"  .
+ENUM ->                "enum"  .
+EVENT ->               "event"  .
+EXPLICIT ->            "explicit"  .
+EXTERN ->              "extern"  .
+EQUALS ->              "equals"  .
+FALSE ->               "false"  .
+FIELD ->               "field"  .
+FINALLY ->             "finally"  .
+FIXED ->               "fixed"  .
+FLOAT ->               "float"  .
+FOR ->                 "for"  .
+FOREACH ->             "foreach"  .
+FROM ->                "from"  .
+GET ->                 "get"  .
+GOTO ->                "goto"  .
+GROUP ->               "group"  .
+IF ->                  "if"  .
+IMPLICIT ->            "implicit"  .
+IN ->                  "in"  .
+INT ->                 "int"  .
+INTERFACE ->           "interface"  .
+INTERNAL ->            "internal"  .
+INTO ->                "into"  .
+IS ->                  "is"  .
+JOIN ->                "join"  .
+LET ->                 "let"  .
+LOCK ->                "lock"  .
+LONG ->                "long"  .
+METHOD ->              "method"  .
+MODULE ->              "module"  .
+NAMESPACE ->           "namespace"  .
+NEW ->                 "new"  .
+NULL ->                "null"  .
+OBJECT ->              "object"  .
+ON ->                  "on"  .
+OPERATOR ->            "operator"  .
+ORDERBY ->             "orderby"  .
+OUT ->                 "out"  .
+OVERRIDE ->            "override"  .
+PARAM ->               "param"  .
+PARAMS ->              "params"  .
+PARTIAL ->             "partial"  .
+PRIVATE ->             "private"  .
+PROPERTY ->            "property"  .
+PROTECTED ->           "protected"  .
+PUBLIC ->              "public"  .
+READONLY ->            "readonly"  .
+REF ->                 "ref"  .
+REMOVE ->              "remove"  .
+RETURN ->              "return"  .
+SBYTE ->               "sbyte"  .
+SEALED ->              "sealed"  .
+SELECT ->              "select"  .
+SET ->                 "set"  .
+SHORT ->               "short"  .
+SIZEOF ->              "sizeof"  .
+STACKALLOC ->          "stackalloc"  .
+STATIC ->              "static"  .
+STRING ->              "string"  .
+STRUCT ->              "struct"  .
+SWITCH ->              "switch"  .
+THIS ->                "this"  .
+THROW ->               "throw"  .
+TRUE ->                "true"  .
+TRY ->                 "try"  .
+TYPE ->                "type"  .
+TYPEOF ->              "typeof"  .
+UINT ->                "uint"  .
+ULONG ->               "ulong"  .
+UNCHECKED ->           "unchecked"  .
+UNSAFE ->              "unsafe"  .
+USHORT ->              "ushort"  .
+USING ->               "using"  .
+VAR ->                 "var"  .
+VIRTUAL ->             "virtual"  .
+VOID ->                "void"  .
+VOLATILE ->            "volatile"  .
+WHERE ->               "where"  .
+WHILE ->               "while"  .
+YIELD ->               "yield"  .
+
+// operators
+LPAREN ->              "("  .
+RPAREN ->              ")"  .
+LBRACKET ->            "["  .
+RBRACKET ->            "]"  .
+//ARROW ->               "->"  .
+//RIGHT_ARROW ->         "=>"  .
+DOT ->                 "  ."  .
+BANG ->                "!"  .
+TILDE ->               "~"  .
+PLUS ->                "+"  .
+MINUS ->               "-"  .
+PLUSPLUS ->            "++"  .
+MINUSMINUS ->          "--"  .
+AND ->                 "&"  .
+STAR ->                "*"  .
+SLASH ->               "/"  .
+PERCENT ->             "%"  .
+//LEFTSHIFT ->           "<<"  .
+//RIGHTSHIFT ->          ">>"  .
+LESSTHAN ->            "<"  .
+//LESSEQ ->              "<="  .
+GREATERTHAN ->         ">"  .
+//GREATEREQ ->           ">="  .
+EQUALEQUAL ->          "=="  .
+NOTEQUAL ->            "!="  .
+XOR ->                 "^"  .
+OR ->                  "|"  .
+ANDAND ->              "&&"  .
+OROR ->                "||"  .
+QUESTION ->            "?"  .
+COALESCING ->          "??"  .
+COLON ->               ":"  .
+COLON_COLON ->         "::"  .
+EQUAL ->               "="  .
+STAREQUAL ->           "*="  .
+SLASHEQUAL ->          "/="  .
+PERCENTEQUAL ->        "%="  .
+PLUSEQUAL ->           "+="  .
+MINUSEQUAL ->          "-="  .
+ANDEQUAL ->            "&="  .
+XOREQUAL ->            "^="  .
+OREQUAL ->             "|="  .
+//LEFTSHIFTEQUAL ->      "<<="  .
+//RIGHTSHIFTEQUAL ->     ">>="  .
+COMMA ->               ","  .
+SEMICOLON ->           "  ."  .
+LBRACE ->              "{"  .
+RBRACE ->              "}"  .
+
+
+Identifier
+  :
+  Identifiernondigit (Identifiernondigit | DIGIT)*
+  .
+
+
+Identifiernondigit
+  -> NONDIGIT | Universalcharactername
+  .
+
+Universalcharactername
+  -> "\\u" Hexquad | "\\U" Hexquad Hexquad
+  .
+
+Hexquad
+  -> HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT
+  .
+
+Literal
+  -> Integerliteral
+  | Characterliteral
+  | Floatingliteral
+  | Stringliteral+
+  | booleanliteral
+  | pointerliteral
+  | userdefinedliteral
+  .
+
+
+Integerliteral
+  -> Decimalliteral Integersuffix? | Octalliteral Integersuffix? | Hexadecimalliteral Integersuffix? | Binaryliteral Integersuffix?
+  .
+
+
+Decimalliteral
+  -> NONZERODIGIT DIGIT*
+  .
+
+
+Octalliteral
+  -> "0" OCTALDIGIT*
+  .
+
+
+Hexadecimalliteral
+  -> ("0x" | "0X") HEXADECIMALDIGIT*
+  .
+
+
+Binaryliteral
+  -> ("0b" | "0B") BINARYDIGIT*
+  .
+
+Integersuffix
+  -> Unsignedsuffix Longsuffix? | Unsignedsuffix Longlongsuffix? | Longsuffix Unsignedsuffix? | Longlongsuffix Unsignedsuffix?
+  .
+
+
+Floatingliteral
+  -> Fractionalconstant Exponentpart? Floatingsuffix? | Digitsequence Exponentpart Floatingsuffix?
+  .
+
+
+Fractionalconstant
+  -> Digitsequence? "  ." Digitsequence | Digitsequence "  ."  .
+  .
+
+
+Exponentpart
+  -> "e" SIGN? Digitsequence | "E" SIGN? DIGIT*
+  .
+
+
+Stringliteral
+  -> Encodingprefix? RAWSTRING
+  .
+
+
+Encodingprefix
+  -> "u8" | "u" | "U" | "L"
+  .
+
+
+booleanliteral
+  -> False
+  | True
+  .
+
+pointerliteral
+  -> Nullptr
+  .
+
+userdefinedliteral
+  -> Userdefinedintegerliteral
+  | Userdefinedfloatingliteral
+  | Userdefinedstringliteral
+  | Userdefinedcharacterliteral
+  .
+
+
+Userdefinedintegerliteral
+  -> Decimalliteral Udsuffix | Octalliteral Udsuffix | Hexadecimalliteral Udsuffix | Binaryliteral Udsuffix
+  .
+
+
+Userdefinedfloatingliteral
+  -> Fractionalconstant Exponentpart? Udsuffix | Digitsequence Exponentpart Udsuffix
+  .
+
+
+Userdefinedstringliteral
+  -> Stringliteral Udsuffix
+  .
+
+
+Userdefinedcharacterliteral
+  -> Characterliteral Udsuffix
+  .
+
+
+Udsuffix
+  -> Identifier
+  .
+
