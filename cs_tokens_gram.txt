@@ -3,9 +3,6 @@ Start ->  Anything* EOF .
 Anything ->
   ReservedWord | Identifier | Operator | Literal  .
 
-Anything ->
-  ReservedWord | Identifier | Operator | Literal  .
-
 ReservedWord
   -> ABSTRACT
   | AS
@@ -287,7 +284,7 @@ LBRACKET ->            "["  .
 RBRACKET ->            "]"  .
 //ARROW ->               "->"  .
 //RIGHT_ARROW ->         "=>"  .
-DOT ->                 "  ."  .
+DOT ->                 "."  .
 BANG ->                "!"  .
 TILDE ->               "~"  .
 PLUS ->                "+"  .
@@ -326,14 +323,14 @@ OREQUAL ->             "|="  .
 //LEFTSHIFTEQUAL ->      "<<="  .
 //RIGHTSHIFTEQUAL ->     ">>="  .
 COMMA ->               ","  .
-SEMICOLON ->           "  ."  .
+SEMICOLON ->           ";"  .
 LBRACE ->              "{"  .
 RBRACE ->              "}"  .
 
 
 Identifier
   :
-  Identifiernondigit (Identifiernondigit | DIGIT)*
+  Identifiernondigit (Identifiernondigit | Digit)*
   .
 
 
@@ -350,13 +347,12 @@ Hexquad
   .
 
 Literal
-  -> Integerliteral
-  | Characterliteral
-  | Floatingliteral
-  | Stringliteral+
+  -> Integerliteral 
+  | Characterliteral 
+  | Floatingliteral 
+  | Stringliteral 
   | booleanliteral
   | pointerliteral
-  | userdefinedliteral
   .
 
 
@@ -366,7 +362,7 @@ Integerliteral
 
 
 Decimalliteral
-  -> NONZERODIGIT DIGIT*
+  -> NONZERODIGIT DigitsOpt
   .
 
 
@@ -390,17 +386,17 @@ Integersuffix
 
 
 Floatingliteral
-  -> Fractionalconstant Exponentpart? Floatingsuffix? | Digitsequence Exponentpart Floatingsuffix?
+  -> Fractionalconstant Exponentpart? Floatingsuffix? | Digits Exponentpart Floatingsuffix?
   .
 
 
 Fractionalconstant
-  -> Digitsequence? "  ." Digitsequence | Digitsequence "  ."  .
+  -> DigitsOpt DOT DigitsOpt  .
   .
 
 
 Exponentpart
-  -> "e" SIGN? Digitsequence | "E" SIGN? DIGIT*
+  -> "e" SIGN? Digits | "E" SIGN? Digits
   .
 
 
@@ -423,35 +419,8 @@ pointerliteral
   -> Nullptr
   .
 
-userdefinedliteral
-  -> Userdefinedintegerliteral
-  | Userdefinedfloatingliteral
-  | Userdefinedstringliteral
-  | Userdefinedcharacterliteral
-  .
+Digits ->  Digit  DigitsOpt  .
 
+DigitsOpt ->  Digit*  .
 
-Userdefinedintegerliteral
-  -> Decimalliteral Udsuffix | Octalliteral Udsuffix | Hexadecimalliteral Udsuffix | Binaryliteral Udsuffix
-  .
-
-
-Userdefinedfloatingliteral
-  -> Fractionalconstant Exponentpart? Udsuffix | Digitsequence Exponentpart Udsuffix
-  .
-
-
-Userdefinedstringliteral
-  -> Stringliteral Udsuffix
-  .
-
-
-Userdefinedcharacterliteral
-  -> Characterliteral Udsuffix
-  .
-
-
-Udsuffix
-  -> Identifier
-  .
-
+Digit -> NONZERODIGIT | "0"
