@@ -6,11 +6,12 @@ const Sets = require('../../sets');
 module.exports["parsing.ll.ll1_classification"] = function(grammar) {
 
   const nullAmbiguity = grammar.calculate("grammar.nullAmbiguity");
+  const messages = [];
 
   // We can return immediately if the grammar contains a null ambiguity.
 
   if (nullAmbiguity.length > 0) {
-    return { member: false, reason: "it contains a null ambiguity" };
+    messages.push({ member: false, reason: "it contains a null ambiguity" });
   }
 
   const follow = grammar.calculate("grammar.follow");
@@ -47,7 +48,7 @@ module.exports["parsing.ll.ll1_classification"] = function(grammar) {
 
     for (let s in first) {
       if (table[head][s]) {
-        return { member: false, reason: "it contains a first set clash" };
+        messages.push({ member: false, reason: "it contains a first set clash of "+head+" <- "+s+"..." });
       }
 
       table[head][s] = true;
@@ -61,11 +62,15 @@ module.exports["parsing.ll.ll1_classification"] = function(grammar) {
   const first = grammar.calculate("grammar.first");
 
   for (let k in nullable) {
-
-    if (Sets.any(Sets.intersection(first[k], follow[k]))) {
-      return { member: false, reason: "it contains a first/follow set clash" };
+    let intsx = Sets.intersection(first[k], follow[k]);
+    if (Sets.any(intsx)) {
+      messages.push({ member: false, reason: "it contains a first/follow set clash "+k+" -> "+intsx });
     }
 
+  }
+
+  if (messages.length) {
+    return messages;
   }
 
   return { member: true };

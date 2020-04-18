@@ -1,9 +1,18 @@
 <%
   function formatClassification(cs, c, n) {
-    if (cs[c].member)
+    if (cs[c].member) {
       return "The grammar is " + n + ".";
-    else
+    } else if (cs[c].reason) {
       return "<span class=\"conflict\">Not " + n + " &mdash; " + cs[c].reason + ".</span></td>";
+    } else {
+      let r = [];
+      r.push("<span class=\"conflict\">Not " + n + " &mdash; :</span>");
+      cs[c].forEach(function(item) {
+        r.push("<span>" + item.reason + ".</span>");
+      });
+      r.push("</td>")
+      return r;
+    }
   }
 %>
 
