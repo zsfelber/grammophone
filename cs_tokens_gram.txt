@@ -347,81 +347,79 @@ Hexquad
   .
 
 Literal
-  -> Integerliteral 
-  | Characterliteral 
-  | Floatingliteral 
-  | Stringliteral 
-  | booleanliteral
-  | pointerliteral
+  -> NumberLiteral
+  | CharacterLiteral 
+  | StringLiteral 
+  | BooleanLiteral
+  | PointerLiteral
+  .
+
+NumberLiteral
+  -> "0" ("x"|"X"|"b"|"B") Hexadigit* IntSuffix*
+  |  DigitNZ DigitsOpt IntOrFloat
+  |  FLOATING_NUMBER FloatSuffix*
+  .
+
+IntOrFloat
+  -> NumberSuffix* | ExponentPart FloatSuffix*
+  .
+
+FLOATING_NUMBER
+  -> /{FLOATING_NUMBER_REGEX_1}|{FLOATING_NUMBER_REGEX_2}/
+  .
+
+FLOATING_NUMBER_REGEX_1
+  -> /{FLOAT_1}{FLOAT_2}?/
+  .
+
+FLOATING_NUMBER_REGEX_2
+  -> /[0-9]+{FLOAT_2}/
+  .
+
+FLOAT_1
+  -> /{FLOAT_1a}|{FLOAT_1b}/
+  .
+
+FLOAT_1a
+  -> /[0-9]+[.][0-9]*/
+  .
+
+FLOAT_1b
+  -> /[.][0-9]+/
+  .
+
+FLOAT_2
+  -> /[eE][-+]?\d*/
   .
 
 
-Integerliteral
-  -> Decimalliteral INTEGERSUFFIX? | Octalliteral INTEGERSUFFIX? | Hexadecimalliteral INTEGERSUFFIX? | Binaryliteral INTEGERSUFFIX?
-  .
-
-
-Decimalliteral
-  -> DigitNZ DigitsOpt
-  .
-
-
-Octalliteral
-  -> "0" Octaldigit*
-  .
-
-
-Hexadecimalliteral
-  -> ("0x" | "0X") Hexadigit*
-  .
-
-
-Binaryliteral
-  -> ("0b" | "0B") Bindigit*
-  .
-
-INTEGERSUFFIX
-  -> UNSIGNEDSUFFIX | INTEGERTYPESUFFIX | UNSIGNEDSUFFIX INTEGERTYPESUFFIX | INTEGERTYPESUFFIX UNSIGNEDSUFFIX
-  .
-
-Floatingliteral
-  -> Fractionalconstant Exponentpart? FLOATINGTYPESUFFIX? | Digits Exponentpart FLOATINGTYPESUFFIX?
-  .
-
-INTEGERTYPESUFFIX
- -> "l" | "L" | "i" | "I" | "s" | "S"
+NumberSuffix
+ -> IntSuffix | FloatSuffix
+ .
+ 
+IntSuffix
+ -> "l" | "L" | "i" | "I" | "s" | "S" | "u" | "U"
  .
 
-FLOATINGTYPESUFFIX
+FloatSuffix
  -> "d" | "D" | "f" | "F"
  .
 
-Fractionalconstant
-  -> Decimalliteral DOT DigitsOpt  |  "0" DOT DigitsOpt  |  DOT  Digits  .
+StringPrefix
+ -> "u8" | "l" | "L" | "r" | "R" | "u" | "U"
+ .
+
+StringLiteral
+  -> StringPrefix? RAWSTRING
   .
 
 
-Exponentpart
-  -> "e" SIGN? Digits | "E" SIGN? Digits
-  .
-
-
-Stringliteral
-  -> Encodingprefix? RAWSTRING
-  .
-
-
-Encodingprefix
-  -> "u8" | "u" | "U" | "L"
-  .
-
-
-booleanliteral
+BooleanLiteral
   -> False
   | True
   .
 
-pointerliteral
+PointerLiteral
   -> Nullptr
   .
 
@@ -434,15 +432,8 @@ Hexadigit -> "0" | HexadigitNZ
 
 Digit -> "0" | DigitNZ
 
-Octaldigit -> "0" | OctaldigitNZ
-
-Bindigit -> "0" | "1"
-
-
 HexadigitNZ -> DigitNZ | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F"
 
-DigitNZ -> OctaldigitNZ | "8" | "9"
-
-OctaldigitNZ -> "1" | "2" | "3" | "4" | "5" | "6" | "7"
+DigitNZ -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 
